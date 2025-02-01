@@ -71,7 +71,6 @@ export const useSendMessage = () => {
 };
 
 export const useCreateChat = () => {
-  const createChat = useMutation(api.chat.createChat);
-
+  const createChat = useMutation(api.chats.createChat);
   return useMutationHook(createChat);
 };

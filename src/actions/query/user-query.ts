@@ -53,14 +53,14 @@ export const useGetUserPrivacy = ({
   };
 };
 
-export const useGetUserById = ({ userId }: { userId: Id<"users"> }) => {
-  const user = useQuery(api.users.getUserById, { userId });
-  const isLoading = user === undefined;
+export const useGetUserById = ({
+  userId,
+}: {
+  userId: Id<"users"> | undefined;
+}) => {
+  const author = useQuery(api.users.getUserById, userId ? { userId } : "skip");
 
-  return {
-    user,
-    isLoading,
-  };
+  return author;
 };
 
 export const useGetAllUsers = () => {

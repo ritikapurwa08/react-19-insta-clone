@@ -5,6 +5,11 @@ import UserProfilePage from "@/components/users/user-profile";
 import HomePageLeftSidebar from "@/components/home-page-left-sidebar";
 import HomePageRightSidebar from "@/components/home-page-right-sidebar";
 import AllPostpage from "@/components/post/all-post-page";
+import UserAuthPage from "@/components/users/user-auth-page";
+import Messages from "@/components/message/message";
+import ChatWindow from "@/components/message/chat-window";
+import AuthorProfilePage from "@/components/users/author-profile";
+import AllUsersPage from "@/components/users/user-pagination-page";
 
 const App = () => {
   return (
@@ -15,13 +20,18 @@ const App = () => {
           <div className="flex-grow overflow-y-auto hide-scrollbar ">
             <Routes>
               <Route index path="/" element={<AllPostpage />} />
-              <Route path="profile" element={<UserProfilePage />} />
-              <Route path="login" element={<UserProfilePage />} />
+              <Route path="/login" element={<UserAuthPage />} />
+              <Route path="/profile" element={<UserProfilePage />} />
+              <Route path="/users" element={<AllUsersPage />} />
+              <Route path="/messages" element={<Messages />} />
+              <Route path="/chat/:chatId" element={<ChatWindow />} />
+              <Route path="/author/:userId" element={<AuthorProfilePage />} />
             </Routes>
           </div>
           <HomePageRightSidebar />
         </div>
       </main>
+
       <Toaster />
     </ThemeProvider>
   );

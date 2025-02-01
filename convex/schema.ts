@@ -52,14 +52,42 @@ export const Tables = () => {
     ),
   }).index("by_userId", ["userId"]);
 
+  const chats = defineTable({
+    participants: v.array(v.id("users")),
+    isGroup: v.boolean(),
+    groupName: v.optional(v.string()),
+    groupProfilePic: v.optional(v.string()),
+  });
+
+  const messages = defineTable({
+    chatId: v.id("chats"),
+    senderId: v.id("users"),
+    content: v.string(),
+    timestamp: v.number(),
+  });
+
+  const chatParticipants = defineTable({
+    chatId: v.id("chats"),
+    userId: v.id("users"),
+  });
   return {
     userProfileTable,
     userStatsTables,
     userPrivacyTable,
+    chats,
+    messages,
+    chatParticipants,
   };
 };
 
-const { userProfileTable, userStatsTables, userPrivacyTable } = Tables();
+const {
+  userProfileTable,
+  userStatsTables,
+  userPrivacyTable,
+  chatParticipants,
+  chats,
+  messages,
+} = Tables();
 
 const schema = defineSchema({
   ...authTables,
@@ -73,6 +101,9 @@ const schema = defineSchema({
   userProfiles: userProfileTable,
   userPrivacy: userPrivacyTable,
   userStats: userStatsTables,
+  chats: chats,
+  messages: messages,
+  chatParticipants: chatParticipants,
 });
 
 export default schema;
