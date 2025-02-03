@@ -57,19 +57,58 @@ export const Tables = () => {
     isGroup: v.boolean(),
     groupName: v.optional(v.string()),
     groupProfilePic: v.optional(v.string()),
-  });
+    unreadMessages: v.array(
+      v.object({
+        userId: v.id("users"),
+        unreadCount: v.number(),
+      })
+    ),
+  }).index("by_participants", ["participants"]);
 
   const messages = defineTable({
     chatId: v.id("chats"),
     senderId: v.id("users"),
     content: v.string(),
-    timestamp: v.number(),
+    edited: v.boolean(),
+    updatedAt: v.optional(v.number()),
   });
 
   const chatParticipants = defineTable({
     chatId: v.id("chats"),
     userId: v.id("users"),
   });
+
+  const postTable = defineTable({
+    userId: v.id("users"),
+    title: v.string(),
+    content: v.string(),
+    customImage: v.string(),
+    updatedAt: v.optional(v.number()),
+    uploadedImageStorageId: v.optional(v.id("_storage")),
+    uploadedImageUrl: v.optional(v.string()),
+  }).index("by_userId", ["userId"]);
+  const postInteractionTable = defineTable({
+    postId: v.id("posts"),
+    userId: v.id("users"),
+    likedBy: v.array(v.id("users")),
+    likeCount: v.number(),
+    commentBy: v.array(v.id("users")),
+    commentCount: v.number(),
+    savedBy: v.array(v.id("users")),
+    saveCount: v.number(),
+  })
+    .index("by_postId", ["postId"])
+    .index("by_user", ["userId"])
+    .index("by_user_likes", ["userId", "likedBy"]) // Index for checking if a user has liked a post
+    .index("by_user_saves", ["userId", "savedBy"]); // Index for checking if a user has saved a post
+
+  const postCommentTable = defineTable({
+    postId: v.id("posts"),
+    userId: v.id("users"),
+    comment: v.string(),
+    updatedAt: v.optional(v.number()),
+  }).index("by_postId", ["postId"]);
+
   return {
     userProfileTable,
     userStatsTables,
@@ -77,6 +116,9 @@ export const Tables = () => {
     chats,
     messages,
     chatParticipants,
+    postCommentTable,
+    postTable,
+    postInteractionTable,
   };
 };
 
@@ -87,6 +129,9 @@ const {
   chatParticipants,
   chats,
   messages,
+  postCommentTable,
+  postTable,
+  postInteractionTable,
 } = Tables();
 
 const schema = defineSchema({
@@ -104,6 +149,9 @@ const schema = defineSchema({
   chats: chats,
   messages: messages,
   chatParticipants: chatParticipants,
+  posts: postTable,
+  postInteraction: postInteractionTable,
+  postComment: postCommentTable,
 });
 
 export default schema;

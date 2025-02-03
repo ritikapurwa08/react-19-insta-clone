@@ -2,17 +2,15 @@ import { PostList } from "./post-list";
 import { usePaginatedQuery } from "convex/react";
 import { api } from "@convex/_generated/api";
 
-const AllPostpage = () => {
-  const { isLoading, results, loadMore, status } = usePaginatedQuery(
-    api.posts.getAllPaginatedPost,
+const YourPostPage = () => {
+  const { results, isLoading, loadMore, status } = usePaginatedQuery(
+    api.posts.getPaginatedUserPost,
     {},
     { initialNumItems: 5 }
   );
+
   return (
-    <div className="py-4">
-      <div className="p-4 flex w-full">
-        <span className="text-2xl font-bold text-center w-full">All Posts</span>
-      </div>
+    <div>
       <PostList
         results={results}
         isLoading={isLoading}
@@ -23,4 +21,4 @@ const AllPostpage = () => {
   );
 };
 
-export default AllPostpage;
+export default YourPostPage;

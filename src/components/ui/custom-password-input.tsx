@@ -41,6 +41,7 @@ const CustomPasswordInput = <T extends FieldValues>({
   onChange,
   showPassword,
   icon: Icon,
+  placeholder,
 }: CustomPasswordInputProps<T>) => {
   const {
     field,
@@ -71,7 +72,7 @@ const CustomPasswordInput = <T extends FieldValues>({
                 <Input
                   id={`${name}-input`}
                   type={showPassword ? "text" : "password"}
-                  placeholder=" "
+                  placeholder={placeholder}
                   {...field}
                   disabled={disabled}
                   className={cn(

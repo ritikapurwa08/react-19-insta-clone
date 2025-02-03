@@ -1,12 +1,15 @@
 import { api } from "@convex/_generated/api";
-import { Id } from "@convex/_generated/dataModel";
-import { useQuery } from "convex/react";
+import { Doc, Id } from "@convex/_generated/dataModel";
+import { usePaginatedQuery, useQuery } from "convex/react";
 
-export const useGetUserChats = ({
-  userId,
-}: {
+interface UserId {
   userId: Id<"users"> | undefined;
-}) => {
+}
+interface ChatId {
+  chatId: Id<"chats"> | undefined;
+}
+
+export const useGetUserChats = ({ userId }: UserId) => {
   const userChats = useQuery(
     api.chats.getUserChats,
     userId ? { userId } : "skip"
@@ -14,11 +17,7 @@ export const useGetUserChats = ({
   return userChats;
 };
 
-export const useGetChatMessages = ({
-  chatId,
-}: {
-  chatId: Id<"chats"> | undefined;
-}) => {
+export const useGetChatMessages = ({ chatId }: ChatId) => {
   const messages = useQuery(
     api.messages.getMessages,
     chatId ? { chatId } : "skip"
@@ -39,3 +38,59 @@ export const useGetChatBetweenUsers = ({
   );
   return chat;
 };
+
+type Chat = Doc<"chats">;
+
+type UsePaginatedUsersResult = {
+  results: Chat[];
+  status: "CanLoadMore" | "LoadingFirstPage" | "LoadingMore" | "Exhausted";
+  loadMore: (numItems: number) => void;
+  isLoading: boolean;
+  hasMore: boolean;
+  NoMore: boolean;
+};
+
+export const usePaginatedUsersHook = (
+  queryName: "getUserChatsPaginated",
+  initialNumItems: number = 5,
+  userIds: Id<"users">[] | undefined
+): UsePaginatedUsersResult => {
+  const { results, status, loadMore } = usePaginatedQuery(
+    api.chats[queryName],
+    { userIds },
+    { initialNumItems }
+  );
+
+  const isLoading = status === "LoadingFirstPage" || status === "LoadingMore";
+  const hasMore = status === "CanLoadMore";
+  const NoMore = status === "Exhausted";
+
+  return {
+    results: results as Chat[],
+    loadMore,
+    isLoading,
+    status,
+    hasMore,
+    NoMore,
+  };
+};
+
+export function useGetChatPaginate({
+  userIds,
+  numItems,
+}: {
+  userIds: Id<"users">[] | undefined;
+  numItems: number;
+}) {
+  const { results, status, loadMore } = usePaginatedQuery(
+    api.chats.getUserChatsPaginated,
+    { userIds },
+    { initialNumItems: numItems }
+  );
+
+  return {
+    results,
+    status,
+    loadMore,
+  };
+}

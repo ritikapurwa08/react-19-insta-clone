@@ -2,6 +2,7 @@ import { convexAuth } from "@convex-dev/auth/server";
 import { Password } from "@convex-dev/auth/providers/Password";
 import { DataModel } from "./_generated/dataModel";
 import { MutationCtx } from "./_generated/server";
+
 const CustomEmailAndPassword = Password<DataModel>({
   profile(params) {
     return {

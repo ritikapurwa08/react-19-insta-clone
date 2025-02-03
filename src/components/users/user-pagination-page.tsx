@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { ScrollArea } from "../ui/scroll-area";
+import UserBlogHeaderImage from "../post/user-blog-profile";
 // Custom hook for intersection observer
 
 const AllUsersPage = () => {
@@ -29,7 +30,11 @@ const AllUsersPage = () => {
             onClick={() => handleClick(user._id)}
             key={user._id}
           >
-            <h1>{user.name}</h1>
+            <UserBlogHeaderImage
+              size="size-12"
+              showName={true}
+              userId={user._id}
+            />
           </div>
         ))}
 

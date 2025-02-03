@@ -10,8 +10,15 @@ import CustomPasswordInput from "../ui/custom-password-input";
 import SubmitButton from "../ui/submit-button";
 import ShowPasswordCheckBox from "../ui/show-password-checkbox";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../ui/button";
 
-const UserSignUp = () => {
+const UserSignUp = ({
+  isLogin,
+  setIsLogin,
+}: {
+  isLogin: boolean;
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [, setEmail] = useState(true);
@@ -65,48 +72,60 @@ const UserSignUp = () => {
   };
 
   return (
-    <Form {...form}>
-      <form
-        className="flex flex-col space-y-3 max-w-xl mx-auto justify-center  h-full"
-        onSubmit={form.handleSubmit(handleSignUp)}
-      >
-        <CustomInput control={form.control} name="name" label="Name" />
-        <CustomEmailInput
-          setIsEmailAvailable={setEmail}
-          control={form.control}
-          name="email"
-          label="Email"
-        />
-        <CustomPasswordInput
-          control={form.control}
-          name="password"
-          label="Password"
-          showPassword={showPassword}
-          setShowPassword={setShowPassword}
-        />
-        <CustomPasswordInput
-          control={form.control}
-          name="confirmPassword"
-          label="Confirm Password"
-          showPassword={showPassword}
-          setShowPassword={setShowPassword}
-        />
-
-        {error && <div className="text-red-500">{error}</div>}
-
-        <ShowPasswordCheckBox
-          setShowPassword={setShowPassword}
-          showPassword={showPassword}
-        />
-        <SubmitButton
-          type="submit"
-          isLoading={loading}
-          loadingText="Signing Up"
+    <main className="flex flex-col items-center justify-center h-full w-full ">
+      {" "}
+      <section className=" h-fit  w-full text-center py-4">
+        <h1 className="text-3xl font-bold text-center">Sign Up</h1>
+        <p>Sign Up in to your account</p>
+      </section>
+      <Form {...form}>
+        <form
+          className="flex flex-col  space-y-3 max-w-xl w-full mx-auto justify-start  h-fit"
+          onSubmit={form.handleSubmit(handleSignUp)}
         >
-          Sign Up
-        </SubmitButton>
-      </form>
-    </Form>
+          <CustomInput control={form.control} name="name" label="Name" />
+          <CustomEmailInput
+            setIsEmailAvailable={setEmail}
+            control={form.control}
+            name="email"
+            label="Email"
+          />
+          <CustomPasswordInput
+            control={form.control}
+            name="password"
+            label="Password "
+            placeholder="Enter your password"
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+          />
+          <CustomPasswordInput
+            control={form.control}
+            name="confirmPassword"
+            label="Confirm Password"
+            placeholder="Confirm your password"
+            showPassword={showPassword}
+            setShowPassword={setShowPassword}
+          />
+
+          {error && <div className="text-red-500">{error}</div>}
+
+          <ShowPasswordCheckBox
+            setShowPassword={setShowPassword}
+            showPassword={showPassword}
+          />
+          <SubmitButton
+            type="submit"
+            isLoading={loading}
+            loadingText="Signing Up"
+          >
+            Sign Up
+          </SubmitButton>
+          <Button variant="link" onClick={() => setIsLogin(!isLogin)}>
+            {isLogin ? "Create an account" : "Already have an account?"}
+          </Button>
+        </form>
+      </Form>
+    </main>
   );
 };
 

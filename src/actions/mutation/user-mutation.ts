@@ -75,15 +75,6 @@ export const useUpdateUserPrivacy = () => {
   return useMutationHook(useUpdateUserPrivacy);
 };
 
-export const useFolllowUser = () => {
-  const followUser = useMutation(api.users.followUser);
-  return useMutationHook(followUser);
-};
-export const useUnfollowUser = () => {
-  const unfollowUser = useMutation(api.users.unfollowUser);
-  return useMutationHook(unfollowUser);
-};
-
 export const useUpdateUserCustomImage = () => {
   const updateUserCustomImage = useMutation(api.users.updateUserCustomProfile);
   return useMutationHook(updateUserCustomImage);

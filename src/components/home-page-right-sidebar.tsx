@@ -2,10 +2,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Menu } from "lucide-react"; // Assuming you're using Lucide icons for the menu
+import { useGetCurrentUser } from "@/actions/query/user-query";
+import { CreatePostDialog } from "./post/create-post-dialog-button";
 
 const HomePageRightSidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  const user = useGetCurrentUser();
+  const userId = user?._id;
   const rightSidebarNavigation = [
     { id: 1, name: "YourPost", path: "/your-post" },
     { id: 2, name: "LikedPost", path: "/liked-post" },
@@ -29,11 +32,14 @@ const HomePageRightSidebar = () => {
       {/* Sidebar */}
       <div
         id="right-sidebar"
-        className={`basis-1/4 md:basis-1/5 shrink-0 sticky top-0 h-screen overflow-y-auto transform transition-transform duration-200 ease-in-out ${
+        className={`basis-1/4 min-w-full md:basis-1/5 shrink-0 sticky top-0 h-screen overflow-y-auto transform transition-transform duration-200 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "translate-x-full"
         } md:translate-x-0`}
       >
-        <div id="sidebar" className="border-gray-600 h-full">
+        <div id="sidebar" className="border-gray-600 pt-6 h-full">
+          <div className="px-4">
+            <CreatePostDialog userId={userId} />
+          </div>
           <div className="flex flex-col space-y-4 p-4">
             {rightSidebarNavigation.map((item) => (
               <Link to={item.path} key={item.id}>

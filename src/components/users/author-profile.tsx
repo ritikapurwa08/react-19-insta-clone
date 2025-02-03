@@ -28,10 +28,12 @@ const AuthorProfilePage = () => {
       <h1>
         <div>{author.name}</div>
 
-        <CreateChatButton
-          memberOneId={currentUserId?._id}
-          memberTwoId={author._id}
-        />
+        {author._id !== currentUserId?._id && (
+          <CreateChatButton
+            memberOneId={currentUserId?._id}
+            memberTwoId={author._id}
+          />
+        )}
       </h1>
     </div>
   );

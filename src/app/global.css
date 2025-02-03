@@ -6,7 +6,6 @@
 
 @layer base {
   :root {
-
     --background: 0 0% 100%;
 
     --foreground: 224 71.4% 4.1%;
@@ -55,10 +54,9 @@
 
     --chart-5: 27 87% 67%;
 
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
   .dark {
-
     --background: 224 71.4% 4.1%;
 
     --foreground: 210 20% 98%;
@@ -105,7 +103,7 @@
 
     --chart-4: 280 65% 60%;
 
-    --chart-5: 340 75% 55%
+    --chart-5: 340 75% 55%;
   }
 }
 
@@ -114,26 +112,21 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background  text-foreground;
   }
 }
 
 /* width */
 .hide-scrollbar::-webkit-scrollbar {
-  width: 5px; /* Make scrollbar thinner */
+  @apply w-0.5 hover:w-1 hover:md:w-2 hover:lg:w-2.5 md:w-1 lg:w-1.5;
 }
 
 /* Track */
 .hide-scrollbar::-webkit-scrollbar-track {
-  background: #201f1f; /* Track color */
+  @apply bg-zinc-900;
 }
 
 /* Handle */
 .hide-scrollbar::-webkit-scrollbar-thumb {
-  background: #0e40e5; /* Handle color */
-}
-
-/* Handle on hover */
-.hide-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #1303f3; /* Handle color on hover */
+  @apply bg-pink-500 rounded-full hover:bg-pink-600  transition-all duration-200 ease-in-out;
 }

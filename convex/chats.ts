@@ -1,5 +1,8 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { paginationOptsValidator } from "convex/server";
+import { stringify } from "querystring";
+import { getAuthUserId } from "@convex-dev/auth/server";
 
 export const createChat = mutation({
   args: {
@@ -9,11 +12,17 @@ export const createChat = mutation({
     groupProfilePic: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("User not found");
+    const user = await ctx.db.get(userId);
+    if (!user) throw new Error("User not found");
+    const userName = user.name;
     const chatId = await ctx.db.insert("chats", {
       participants: args.participantIds,
-      isGroup: args.isGroup,
-      groupName: args.groupName,
+      isGroup: args.isGroup ?? false,
+      groupName: args.groupName ?? userName,
       groupProfilePic: args.groupProfilePic,
+      unreadMessages: [],
     });
 
     for (const participantId of args.participantIds) {
@@ -91,5 +100,32 @@ export const getChatBetweenUsers = query({
 
     // Step 3: If no chat exists, return null
     return null;
+  },
+});
+
+export const addUserToChat = mutation({
+  args: {
+    chatId: v.id("chats"),
+    userId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    const { chatId, userId } = args;
+
+    const chat = await ctx.db.get(chatId);
+    if (!chat) throw new Error("Chat not found");
+
+    // Add the user to the participants list
+    const updatedParticipants = [...chat.participants, userId];
+
+    // Initialize unread count for the new user
+    const updatedUnreadMessages = [
+      ...chat.unreadMessages,
+      { userId, unreadCount: 0 },
+    ];
+
+    await ctx.db.patch(chatId, {
+      participants: updatedParticipants,
+      unreadMessages: updatedUnreadMessages,
+    });
   },
 });
