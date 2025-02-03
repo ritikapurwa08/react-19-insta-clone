@@ -1,7 +1,5 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { paginationOptsValidator } from "convex/server";
-import { stringify } from "querystring";
 import { getAuthUserId } from "@convex-dev/auth/server";
 
 export const createChat = mutation({

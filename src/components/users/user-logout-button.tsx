@@ -21,7 +21,7 @@ const UserLogOutButton = () => {
           duration: 3000,
         });
       })
-      .catch((error) => {
+      .catch(() => {
         toast({
           title: "Logout failed",
           description: "An error occurred while logging out.",

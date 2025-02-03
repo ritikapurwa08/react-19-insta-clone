@@ -26,9 +26,9 @@ const UserDetails = () => {
   const [userProfileData, setUserProfile] = useState<
     Doc<"userProfiles"> | undefined
   >(undefined);
-  const [userPrivacyData, setUserPrivacyData] = useState<
-    Doc<"userPrivacy"> | undefined
-  >(undefined);
+  const [, setUserPrivacyData] = useState<Doc<"userPrivacy"> | undefined>(
+    undefined
+  );
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const { userPrivacy } = useGetUserPrivacy({ userId });
 

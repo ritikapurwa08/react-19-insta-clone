@@ -1,7 +1,7 @@
 import { useCreateComment } from "@/actions/mutation/post-interaction";
 import { useGetPostComment } from "@/actions/query/post-query";
 import { useToast } from "@/hooks/use-toast";
-import { Doc, Id } from "@convex/_generated/dataModel";
+import { Id } from "@convex/_generated/dataModel";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "../ui/form";

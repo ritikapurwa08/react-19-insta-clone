@@ -20,12 +20,7 @@ export type YourPostPageProps = {
   loadMore: (numItems: number) => void;
 };
 
-export function PostList({
-  results,
-  isLoading,
-  status,
-  loadMore,
-}: YourPostPageProps) {
+export function PostList({ results, status, loadMore }: YourPostPageProps) {
   const loaderRef = useRef<HTMLDivElement>(null);
   const loadingLock = useRef(false);
   const [initialLoadDone, setInitialLoadDone] = useState(false);
